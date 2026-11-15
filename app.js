@@ -30,7 +30,33 @@
   const TYPES = [['all', 'All'], ['gal', 'Gallons'], ['qt', 'Quarts'], ['atf', 'ATF / CVT'], ['diesel', 'Diesel']];
   const FINDER = ['0W-20', '5W-30', '10W-30', '10W-40', '5W-40', '15W-40', 'ATF/CVT'];
   const LIMIT = 8;
-  const CAN = { gal: 'GAL', qt: 'QT', atf: 'ATF', diesel: 'DSL' };
+  // Drawn bottle thumbnails in each brand's colours: [body, label, label text, short name]
+  const BR = {
+    'Mobil': ['#E9EDF5', '#1F4E9C', '#FFFFFF', 'MOBIL'],
+    'Mobil 1': ['#22252B', '#2A63C7', '#FFFFFF', 'MOBIL 1'],
+    'Mobil Delvac': ['#2B2E35', '#D7262E', '#FFFFFF', 'DELVAC'],
+    'AMSOIL': ['#13284F', '#E5E9F0', '#13284F', 'AMSOIL'],
+    'Shell': ['#F2C230', '#D52B1E', '#FFFFFF', 'SHELL'],
+    'Valvoline': ['#F1F3F7', '#1D3E8A', '#FFFFFF', 'VALVOLINE'],
+    'Castrol': ['#1C1F24', '#0B8A43', '#FFFFFF', 'CASTROL'],
+    'Toyota': ['#F3F3F3', '#C8102E', '#FFFFFF', 'TOYOTA'],
+    'Ultra Plus': ['#3A3F4A', '#F0F1F4', '#3A3F4A', 'ULTRA+'],
+  };
+  function bottle(p) {
+    const [body, lab, txt, nm] = BR[p.brand] || ['#DDD', '#555', '#FFF', p.brand.toUpperCase()];
+    const big = p.size.startsWith('Gallon');
+    const shape = big
+      ? `<rect x="9" y="3" width="10" height="6" rx="1.5" fill="${lab}"/>
+         <path d="M7 9h14l5 5h14a4 4 0 0 1 4 4v32a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V13a4 4 0 0 1 3-4z" fill="${body}" stroke="rgba(0,0,0,.14)"/>
+         <rect x="29" y="17" width="10" height="6" rx="3" fill="var(--soft)" stroke="rgba(0,0,0,.1)"/>
+         <rect x="8" y="28" width="32" height="18" rx="2" fill="${lab}"/>
+         <text x="24" y="39.5" text-anchor="middle" font-size="6" font-weight="800" fill="${txt}" textLength="${Math.min(28, nm.length * 4)}" lengthAdjust="spacingAndGlyphs">${nm}</text>`
+      : `<rect x="19" y="3" width="10" height="6" rx="1.5" fill="${lab}"/>
+         <path d="M18 9h12l5 8v33a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4V17z" fill="${body}" stroke="rgba(0,0,0,.14)"/>
+         <rect x="15" y="26" width="18" height="20" rx="2" fill="${lab}"/>
+         <text x="24" y="38" text-anchor="middle" font-size="4.6" font-weight="800" fill="${txt}" textLength="${Math.min(16, nm.length * 3)}" lengthAdjust="spacingAndGlyphs">${nm}</text>`;
+    return `<span class="thumb" aria-hidden="true"><svg viewBox="0 0 48 56" width="46" height="54">${shape}</svg></span>`;
+  }
 
   const state = { type: 'all', grade: null, all: false, open: null };
   const pick = {}; // per product: grade, tier, qty
@@ -89,7 +115,7 @@
     }
     return `<li class="prod" data-id="${p.id}">
       <button class="prod-row" aria-expanded="${isOpen}" aria-controls="pb-${p.id}">
-        <span class="prod-main"><b>${p.name}</b><small>${meta}</small></span>
+        ${bottle(p)}<span class="prod-main"><b>${p.name}</b><small>${meta}</small></span>
         <span class="prod-price">${price}</span>
       </button>${body}</li>`;
   }
