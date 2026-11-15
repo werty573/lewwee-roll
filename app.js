@@ -40,18 +40,19 @@
 
   const typesEl = $('#types');
   const renderTypes = () => {
+    if (!typesEl) return;
     typesEl.innerHTML = TYPES.map(([k, l]) => {
       const n = P.filter(p => (k === 'all' || p.type === k) && matchGrade(p, state.grade)).length;
       return `<button class="type" role="tab" aria-selected="${state.type === k}" data-type="${k}">${l}<small>${n}</small></button>`;
     }).join('');
   };
-  typesEl.addEventListener('click', e => {
+  typesEl && typesEl.addEventListener('click', e => {
     const b = e.target.closest('.type'); if (!b) return;
     state.type = b.dataset.type; state.all = false; render();
   });
 
   const gradesEl = $('#grades');
-  gradesEl.innerHTML = `<button class="grade" data-g="">Any grade</button>` + FINDER.map(g => `<button class="grade" data-g="${g}">${g}</button>`).join('');
+  gradesEl.innerHTML = `<button class="grade" data-g="">All</button>` + FINDER.map(g => `<button class="grade" data-g="${g}">${g}</button>`).join('');
   gradesEl.addEventListener('click', e => {
     const b = e.target.closest('.grade'); if (!b) return;
     setGrade(b.dataset.g || null);
@@ -69,30 +70,27 @@
     s.grade ||= p.grades[0]; s.tier ??= 0; s.qty ||= 1;
     const single = p.tiers[0] ? p.tiers[0][2] : 0;
     const isOpen = state.open === p.id;
-    const sizeShort = p.size.split(' ')[0];
-    const meta = `${sizeShort} · ${p.grades.length > 1 ? p.grades.length + ' grades' : p.grades[0]}${p.tiers.length > 1 ? ' · case price' : ''}`;
-    const price = p.tiers.length ? `<small>${p.tiers.length > 1 ? 'from' : 'each'}</small><b>${money(single)}</b>` : `<span class="poa">Ask price</span>`;
+    const meta = `${p.size.split(' ')[0]} · ${p.grades.length > 1 ? p.grades.join(', ') : p.grades[0]}`;
+    const price = p.tiers.length ? money(single) : `<span class="poa">Ask</span>`;
     let body = '';
     if (isOpen) {
       const grades = p.grades.length > 1
         ? p.grades.map(g => `<button class="cg" aria-pressed="${s.grade === g}" data-grade="${g}">${g}</button>`).join('')
         : `<span class="cg static">${p.grades[0]}</span>`;
-      const tiers = p.tiers.length ? `<div><p class="pb-lab">Pack</p><div class="tiers" role="radiogroup" aria-label="${p.name} pack">` + p.tiers.map(([l, u, pr], i) => {
+      const tiers = p.tiers.length ? `<div class="tiers" role="radiogroup" aria-label="${p.name} pack">` + p.tiers.map(([l, u, pr], i) => {
         const sv = u > 1 ? single * u - pr : 0;
-        return `<label class="tier"><input type="radio" name="t-${p.id}" value="${i}" ${s.tier === i ? 'checked' : ''}><span class="tier-l">${l}${sv > 0 ? `<small>Save ${money(sv)}</small>` : ''}</span><span class="tier-p">${money(pr)}</span></label>`;
-      }).join('') + '</div></div>'
+        return `<label class="tier"><input type="radio" name="t-${p.id}" value="${i}" ${s.tier === i ? 'checked' : ''}><span class="tier-l">${l}${sv > 0 ? `<small>save ${money(sv)}</small>` : ''}</span><span class="tier-p">${money(pr)}</span></label>`;
+      }).join('') + '</div>'
         : `<p class="ask-price">Price on request. <a href="https://wa.me/${WA}?text=${encodeURIComponent('Hi Lewwee Roll, what is the price for ' + p.name + ' ' + p.grades[0] + '?')}" target="_blank" rel="noopener">Ask on WhatsApp</a></p>`;
       const foot = p.tiers.length ? `<div class="pb-foot">
           <div class="qty"><button data-q="-1" aria-label="Less">−</button><output>${s.qty}</output><button data-q="1" aria-label="More">+</button></div>
-          <button class="btn btn-go add"><i class="ph-bold ph-plus"></i> Add to slip</button></div>` : '';
-      body = `<div class="prod-body" id="pb-${p.id}"><div><p class="pb-lab">Grade</p><div class="cgs">${grades}</div></div>${tiers}${foot}</div>`;
+          <button class="btn btn-go add">Add to order</button></div>` : '';
+      body = `<div class="prod-body" id="pb-${p.id}"><div class="cgs">${grades}</div>${tiers}${foot}</div>`;
     }
-    return `<li class="prod" data-id="${p.id}" open-state="${isOpen ? 'open' : ''}">
+    return `<li class="prod" data-id="${p.id}">
       <button class="prod-row" aria-expanded="${isOpen}" aria-controls="pb-${p.id}">
-        <span class="can" data-t="${p.type}" aria-hidden="true">${CAN[p.type]}</span>
         <span class="prod-main"><b>${p.name}</b><small>${meta}</small></span>
         <span class="prod-price">${price}</span>
-        <i class="ph-bold ph-caret-down chev" aria-hidden="true"></i>
       </button>${body}</li>`;
   }
   function render() {
@@ -105,7 +103,7 @@
     const more = $('#showMore');
     more.hidden = state.all || L.length <= LIMIT;
     more.textContent = `Show all ${L.length} lines`;
-    $('#resultCount').textContent = `${L.length} ${L.length === 1 ? 'line' : 'lines'}${state.grade ? ' in ' + state.grade : ''}`;
+    $('#resultCount') && ($('#resultCount').textContent = `${L.length} ${L.length === 1 ? 'line' : 'lines'}${state.grade ? ' in ' + state.grade : ''}`);
     $$('.grade').forEach(b => b.setAttribute('aria-pressed', (b.dataset.g || null) === state.grade));
   }
   $('#showMore').addEventListener('click', () => { state.all = true; render(); });
@@ -126,8 +124,8 @@
     if (add) {
       const [label, units, price] = p.tiers[s.tier];
       addLine({ pid: p.id, name: p.name, grade: s.grade, tier: label, units, price, size: p.size.split(' ')[0], qty: s.qty });
-      add.classList.add('done'); add.innerHTML = '<i class="ph-bold ph-check"></i> Added';
-      setTimeout(() => { add.classList.remove('done'); add.innerHTML = '<i class="ph-bold ph-plus"></i> Add to slip'; }, 1400);
+      add.classList.add('done'); add.textContent = 'Added';
+      setTimeout(() => { add.classList.remove('done'); add.textContent = 'Add to order'; }, 1400);
     }
   });
   prodEl.addEventListener('change', e => {
@@ -150,6 +148,7 @@
   const count = () => slip.reduce((a, l) => a + l.qty, 0);
   function renderSlip(bump) {
     $('#slipCount').textContent = count();
+    $('#openSlip').classList.toggle('has', count() > 0);
     if (bump && !reduce) { const b = $('#openSlip'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
     $('#slipItems').innerHTML = slip.map((l, i) => `<li>
       <span class="si-name">${l.name}</span><span class="si-price">${money(l.price * l.qty)}</span>
@@ -242,18 +241,18 @@
   const ALL = Object.values(REG).flat();
   $('#areaList').innerHTML = ALL.map(a => `<option value="${a}">`).join('');
   const regEl = $('#regions');
-  regEl.innerHTML = Object.entries(REG).map(([r, as]) => `<div class="region"><b>${r}</b><div>${as.slice(0, 8).map(a => `<span data-a="${a}">${a}</span>`).join('')}${as.length > 8 ? `<span class="more-n">+${as.length - 8} more</span>` : ''}</div></div>`).join('');
+  if (regEl) regEl.innerHTML = Object.entries(REG).map(([r, as]) => `<div class="region"><b>${r}</b><div>${as.slice(0, 8).map(a => `<span data-a="${a}">${a}</span>`).join('')}${as.length > 8 ? `<span class="more-n">+${as.length - 8} more</span>` : ''}</div></div>`).join('');
   const norm = s => s.toLowerCase().replace(/[^a-z]/g, '');
   $('#areaForm').addEventListener('submit', e => {
     e.preventDefault();
     const v = $('#areaIn').value.trim(), out = $('#areaOut');
-    $$('.region span', regEl).forEach(s => s.classList.remove('hit'));
+    regEl && $$('.region span', regEl).forEach(s => s.classList.remove('hit'));
     if (!v) { out.className = 'check-out'; out.textContent = 'Type your area first.'; return; }
     const hit = ALL.find(a => norm(a) === norm(v)) || ALL.find(a => norm(a).startsWith(norm(v)) && norm(v).length > 2);
     if (hit) {
       out.className = 'check-out yes';
       out.innerHTML = `<i class="ph-bold ph-check-circle"></i> Yes, we deliver to ${hit}.`;
-      const s = $(`.region span[data-a="${CSS.escape(hit)}"]`, regEl); if (s) s.classList.add('hit');
+      const s = regEl && $(`.region span[data-a="${CSS.escape(hit)}"]`, regEl); if (s) s.classList.add('hit');
     } else {
       out.className = 'check-out';
       out.innerHTML = `Not on our list yet. <a href="https://wa.me/${WA}?text=${encodeURIComponent('Hi, do you deliver to ' + v + '?')}" target="_blank" rel="noopener">Ask about ${v.replace(/[<>&"]/g, '')}</a>`;
@@ -286,7 +285,7 @@
   const secIO = new IntersectionObserver(es => es.forEach(en => {
     if (en.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
-  ['oil', 'care', 'suzuki', 'workshop', 'courier'].forEach(id => secIO.observe(document.getElementById(id)));
+  ['oil', 'suzuki', 'services', 'courier'].forEach(id => secIO.observe(document.getElementById(id)));
 
   // hide floating slip bar over forms and footer so it never covers inputs
   const covering = new Set();
@@ -304,7 +303,7 @@
   $('#slipBrowse').addEventListener('click', closeSlip);
 
   const filt = $('.filters');
-  new IntersectionObserver(([en]) => filt.classList.toggle('stuck', en.intersectionRatio < 1), { rootMargin: '-80px 0px 0px 0px', threshold: [1] }).observe(filt);
+  filt && new IntersectionObserver(([en]) => filt.classList.toggle('stuck', en.intersectionRatio < 1), { rootMargin: '-80px 0px 0px 0px', threshold: [1] }).observe(filt);
 
   render();
   renderSlip();

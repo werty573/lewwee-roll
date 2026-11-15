@@ -6,13 +6,11 @@
 <title>Lewwee Roll Ltd | Engine oil, Suzuki parts and delivery in Trinidad</title>
 <meta name="description" content="Genuine engine oil, gearbox fluid, filters and car care in Curepe. Single, case or bulk prices, Suzuki parts, mechanical repairs and island-wide delivery.">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B0D1F" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0E0F14" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <link rel="preload" as="image" href="https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=1200&q=70&auto=format&fit=crop">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231C2066'/%3E%3Cpath d='M14 9l-7 7 7 7M22 9l-7 7 7 7' fill='none' stroke='%233FD27F' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
@@ -23,166 +21,66 @@
 <header class="head" id="top">
   <div class="wrap head-in">
     <a class="logo" href="#top" aria-label="Lewwee Roll Ltd, home">
-      <span class="logo-mark"><i class="ph-bold ph-caret-double-left"></i></span>
-      <span class="logo-word">Lewwee Roll<small>Ltd</small></span>
+      <span class="logo-mark"><i class="ph ph-caret-double-left"></i></span>
+      <span class="logo-word">Lewwee Roll</span>
     </a>
     <nav class="nav" aria-label="Sections">
-      <a href="#oil">Oil</a><a href="#care">Car care</a><a href="#suzuki">Suzuki parts</a><a href="#workshop">Repairs</a><a href="#courier">Courier</a>
+      <a href="#oil">Oil</a><a href="#suzuki">Suzuki parts</a><a href="#services">Services</a><a href="#courier">Delivery</a>
     </nav>
     <div class="head-act">
       <button class="icon-btn" id="theme" aria-label="Switch to dark mode"><i class="ph ph-moon"></i></button>
-      <button class="slip-btn" id="openSlip" aria-label="Open order slip"><i class="ph ph-receipt"></i><span class="hide-sm">Order slip</span><b id="slipCount">0</b></button>
+      <button class="slip-btn" id="openSlip" aria-label="Open order"><span>Order</span><b id="slipCount">0</b></button>
       <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i class="ph ph-list"></i></button>
     </div>
   </div>
   <div class="menu" id="menu" hidden>
-    <a href="#oil"><span>Engine oil &amp; fluids</span><i class="ph ph-arrow-right"></i></a>
-    <a href="#care"><span>Car care shelf</span><i class="ph ph-arrow-right"></i></a>
-    <a href="#suzuki"><span>Suzuki parts</span><i class="ph ph-arrow-right"></i></a>
-    <a href="#workshop"><span>Repairs &amp; Ingco tools</span><i class="ph ph-arrow-right"></i></a>
-    <a href="#courier"><span>Courier &amp; delivery</span><i class="ph ph-arrow-right"></i></a>
-    <a class="menu-wa" href="https://wa.me/18687490503" target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i> 868-749-0503</a>
+    <a href="#oil">Oil</a>
+    <a href="#suzuki">Suzuki parts</a>
+    <a href="#services">Services</a>
+    <a href="#courier">Delivery</a>
   </div>
 </header>
 
 <main>
-<!-- HERO -->
-<section class="hero">
-  <img class="hero-img" src="https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=1200&q=70&auto=format&fit=crop"
-       srcset="https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=800&q=70&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=1200&q=70&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=2000&q=70&auto=format&fit=crop 2000w"
-       sizes="100vw" alt="A mechanic in black gloves pouring engine oil into a car" fetchpriority="high">
-  <div class="wrap hero-in">
-    <p class="hero-tag"><i class="ph-fill ph-map-pin"></i> Curepe Village, Trinidad</p>
-    <h1 class="hero-h1">Oil and parts, <em>to your door.</em></h1>
-    <p class="hero-lead">Genuine engine oil by the bottle, case or bulk. Suzuki parts, repairs and a courier run, all sorted on WhatsApp.</p>
+<section class="hero wrap">
+  <div class="hero-copy">
+    <p class="kicker">Curepe, Trinidad</p>
+    <h1 class="hero-h1">Engine oil and Suzuki parts, delivered.</h1>
+    <p class="hero-lead">Genuine oil by the bottle or the case. Order on WhatsApp, collect curbside or get it dropped off.</p>
     <div class="cta-row">
-      <a class="btn btn-go" href="#oil">Shop the oil <i class="ph-bold ph-arrow-down"></i></a>
-      <a class="btn btn-light" href="https://wa.me/18687490503?text=Hi%20Lewwee%20Roll%2C%20I%20have%20a%20question." target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i> WhatsApp us</a>
+      <a class="btn btn-go" href="#oil">See prices</a>
+      <a class="btn btn-line" href="https://wa.me/18687490503?text=Hi%20Lewwee%20Roll%2C%20I%20have%20a%20question." target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i> WhatsApp</a>
     </div>
-    <ul class="hero-facts">
-      <li><i class="ph-bold ph-check"></i> Retail and bulk</li>
-      <li><i class="ph-bold ph-check"></i> Curbside pickup</li>
-      <li><i class="ph-bold ph-check"></i> Island-wide delivery</li>
-    </ul>
   </div>
+  <figure class="hero-photo">
+    <img src="https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=1200&q=70&auto=format&fit=crop"
+         srcset="https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=800&q=70&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=1200&q=70&auto=format&fit=crop 1200w"
+         sizes="(min-width:960px) 50vw, 100vw" alt="A mechanic pouring engine oil into a car" fetchpriority="high">
+  </figure>
 </section>
 
-<!-- BRANDS -->
-<div class="brands" aria-label="Brands in stock">
-  <div class="brands-track">
-    <span>Mobil 1</span><span>Shell Helix</span><span>Castrol</span><span>AMSOIL</span><span>Valvoline</span><span>Toyota Genuine</span><span>Liqui Moly</span><span>STP</span><span>Lucas</span><span>Ingco</span>
-    <span aria-hidden="true">Mobil 1</span><span aria-hidden="true">Shell Helix</span><span aria-hidden="true">Castrol</span><span aria-hidden="true">AMSOIL</span><span aria-hidden="true">Valvoline</span><span aria-hidden="true">Toyota Genuine</span><span aria-hidden="true">Liqui Moly</span><span aria-hidden="true">STP</span><span aria-hidden="true">Lucas</span><span aria-hidden="true">Ingco</span>
-  </div>
-</div>
-
-<!-- DEPARTMENTS -->
-<section class="wrap sec depts" aria-labelledby="deptH">
+<section class="sec wrap" id="oil" aria-labelledby="oilH">
   <div class="sec-head">
-    <h2 id="deptH">What do you need today?</h2>
+    <h2 id="oilH">Oil prices</h2>
+    <p class="muted">November. TT$. Tap an oil for case prices.</p>
   </div>
-  <div class="tiles">
-    <a class="tile t-oil rv" href="#oil">
-      <img src="https://images.unsplash.com/photo-1771340742493-52fbd5476ccb?w=900&q=65&auto=format&fit=crop" alt="" loading="lazy">
-      <span class="tile-txt"><b>Engine oil &amp; fluids</b><small>18 lines priced, single to bulk</small></span><i class="ph-bold ph-arrow-up-right"></i>
-    </a>
-    <a class="tile rv" href="#suzuki">
-      <img src="https://images.unsplash.com/photo-1663852408695-f57f4d75a536?w=700&q=65&auto=format&fit=crop" alt="" loading="lazy">
-      <span class="tile-txt"><b>Suzuki parts</b><small>New or foreign used</small></span><i class="ph-bold ph-arrow-up-right"></i>
-    </a>
-    <a class="tile rv" href="#care">
-      <img src="https://images.unsplash.com/photo-1635437536607-b8572f443763?w=700&q=65&auto=format&fit=crop" alt="" loading="lazy">
-      <span class="tile-txt"><b>Car care</b><small>Filters, wipers, treatments</small></span><i class="ph-bold ph-arrow-up-right"></i>
-    </a>
-    <a class="tile rv" href="#workshop">
-      <img src="https://images.unsplash.com/photo-1775590766345-c117265f0c1b?w=700&q=65&auto=format&fit=crop" alt="" loading="lazy">
-      <span class="tile-txt"><b>Repairs &amp; tools</b><small>Mechanical work, Ingco</small></span><i class="ph-bold ph-arrow-up-right"></i>
-    </a>
-    <a class="tile rv" href="#courier">
-      <img src="https://images.unsplash.com/photo-1641199788912-9a7385a35c82?w=700&q=65&auto=format&fit=crop" alt="" loading="lazy">
-      <span class="tile-txt"><b>Courier</b><small>Parts, packages, people</small></span><i class="ph-bold ph-arrow-up-right"></i>
-    </a>
+  <div class="grades" id="grades" role="group" aria-label="Filter by oil grade"></div>
+  <ul class="plist" id="products"></ul>
+  <div class="empty" id="empty" hidden>
+    <p>Nothing in that grade right now.</p>
+    <button class="text-btn" id="clearGrade">Show all</button>
   </div>
+  <button class="text-btn more" id="showMore" hidden>Show all</button>
 </section>
 
-<!-- OIL COUNTER -->
-<section class="sec oil" id="oil" aria-labelledby="oilH">
-  <div class="wrap">
-    <div class="sec-head split">
-      <div>
-        <p class="eyebrow">November price list</p>
-        <h2 id="oilH">The oil counter</h2>
-      </div>
-      <p class="sec-sub">Tap a line to pick the grade and buy single, by the case or in bulk. Case prices already have the saving worked in. All prices TT$.</p>
-    </div>
-
-    <div class="filters">
-      <div class="grade-row">
-        <span class="grade-lab">Your engine takes</span>
-        <div class="grades" id="grades" role="group" aria-label="Filter by oil grade"></div>
-      </div>
-      <div class="types" id="types" role="tablist" aria-label="Filter by type"></div>
-    </div>
-
-    <p class="count" id="resultCount" aria-live="polite"></p>
-    <ul class="plist" id="products"></ul>
-    <div class="empty" id="empty" hidden>
-      <i class="ph ph-drop"></i>
-      <p>Nothing in that grade and type right now.</p>
-      <button class="btn btn-line" id="clearGrade">Show all oil</button>
-    </div>
-    <button class="btn btn-line more" id="showMore" hidden>Show all</button>
-    <p class="hint">Not sure what your engine takes? It is on the oil cap and in the manual, or <a href="https://wa.me/18687490503?text=Hi%20Lewwee%20Roll%2C%20which%20oil%20does%20my%20car%20take%3F%20Make%2C%20model%20and%20year%3A%20" target="_blank" rel="noopener">send us the make, model and year</a>.</p>
-  </div>
-</section>
-
-<!-- HOW ORDERING WORKS -->
-<section class="wrap sec how" aria-labelledby="howH">
-  <h2 id="howH" class="rv">Ordering takes a minute</h2>
-  <ol class="steps">
-    <li class="rv"><span class="step-n">1</span><div><b>Add to your slip</b><p>Pick the grade and pack size. The slip keeps a running total.</p></div></li>
-    <li class="rv"><span class="step-n">2</span><div><b>Send it on WhatsApp</b><p>The order lands in our chat, already written out. We confirm stock fast.</p></div></li>
-    <li class="rv"><span class="step-n">3</span><div><b>Collect or get it dropped</b><p>Curbside pickup in Curepe, or delivery to your area.</p></div></li>
-  </ol>
-  <div class="pay rv">
-    <i class="ph ph-shield-check"></i>
+<section class="sec wrap" id="suzuki" aria-labelledby="suzH">
+  <div class="split">
     <div>
-      <b>Paying is simple and safe</b>
-      <p>Cash on pickup or delivery, or bank transfer. Card payments can be switched on later through a secure, bank-approved payment provider, so card numbers never touch this website.</p>
+      <h2 id="suzH">Suzuki parts</h2>
+      <p class="muted lead">New or foreign used, for Swift, Alto, Vitara, Jimny, APV and more. Tell us what you need and we reply with a price.</p>
     </div>
-  </div>
-</section>
-
-<!-- CAR CARE -->
-<section class="sec care" id="care" aria-labelledby="careH">
-  <div class="wrap care-in">
-    <figure class="care-photo rv"><img src="https://images.unsplash.com/photo-1635437536607-b8572f443763?w=900&q=70&auto=format&fit=crop" alt="Car care bottles lined up on a shelf" loading="lazy"></figure>
-    <div>
-      <p class="eyebrow">On the shelf</p>
-      <h2 id="careH">Car care and add-ons</h2>
-      <ul class="care-list">
-        <li><a href="#" data-ask="REV filters (air / AC / oil) for my vehicle"><i class="ph ph-funnel"></i><span><b>Filters</b><small>REV air, AC cabin and oil filters</small></span><i class="ph-bold ph-caret-right"></i></a></li>
-        <li><a href="#" data-ask="oil / fuel treatments (Lucas, Berryman, Liqui Moly, STP)"><i class="ph ph-flask"></i><span><b>Treatments</b><small>Lucas, Berryman, Liqui Moly, STP</small></span><i class="ph-bold ph-caret-right"></i></a></li>
-        <li><a href="#" data-ask="a pair of wiper blades"><i class="ph ph-cloud-rain"></i><span><b>Wiper blades</b><small>Common sizes, sold in pairs</small></span><i class="ph-bold ph-caret-right"></i></a></li>
-        <li><a href="#" data-ask="degreaser"><i class="ph ph-spray-bottle"></i><span><b>Degreasers</b><small>Engine bay, driveway, hands</small></span><i class="ph-bold ph-caret-right"></i></a></li>
-        <li><a href="#" data-ask="air fresheners"><i class="ph ph-wind"></i><span><b>Air fresheners</b><small>Hang, clip and spray</small></span><i class="ph-bold ph-caret-right"></i></a></li>
-      </ul>
-      <p class="care-note">Tap any line to ask what is in stock on WhatsApp.</p>
-    </div>
-  </div>
-</section>
-
-<!-- SUZUKI -->
-<section class="sec suzuki" id="suzuki" aria-labelledby="suzH">
-  <div class="wrap suz-in">
-    <div class="suz-copy">
-      <p class="eyebrow on-dark">Suzuki specialists</p>
-      <h2 id="suzH">Suzuki parts, new or foreign used.</h2>
-      <p>Swift, Alto, Vitara, Jimny, APV and the rest. Tell us what you need and we reply with price and availability.</p>
-      <figure class="suz-photo"><img src="https://images.unsplash.com/photo-1663852408695-f57f4d75a536?w=900&q=70&auto=format&fit=crop" alt="A silver Suzuki Swift parked under palm trees" loading="lazy"></figure>
-    </div>
-    <form class="panel" id="partForm" novalidate>
-      <h3>Request a part</h3>
-      <label class="field"><span>Part you need</span><input id="pPart" type="text" placeholder="e.g. front brake pads" autocomplete="off"></label>
+    <form class="form" id="partForm" novalidate>
+      <label class="field"><span>Part</span><input id="pPart" type="text" placeholder="e.g. front brake pads" autocomplete="off"></label>
       <div class="two">
         <label class="field"><span>Model</span>
           <select id="pModel"><option value="">Choose</option><option>Swift</option><option>Alto</option><option>Vitara</option><option>Grand Vitara</option><option>Jimny</option><option>APV</option><option>Celerio</option><option>Ertiga</option><option>Ciaz</option><option>S-Presso</option><option>Other Suzuki</option></select>
@@ -196,121 +94,86 @@
           <label><input type="radio" name="cond" value="Either, best price"><span>Either</span></label>
         </div>
       </fieldset>
-      <label class="field"><span>Chassis number <em>optional</em></span><input id="pChassis" type="text" placeholder="Helps us match the exact part" autocomplete="off"></label>
+      <input id="pChassis" type="hidden" value="">
       <p class="err" id="partErr" role="alert"></p>
-      <button class="btn btn-go full" type="submit"><i class="ph-fill ph-whatsapp-logo"></i> Send request</button>
+      <button class="btn btn-go full" type="submit">Ask on WhatsApp</button>
     </form>
   </div>
 </section>
 
-<!-- WORKSHOP -->
-<section class="wrap sec workshop" id="workshop" aria-labelledby="wsH">
-  <div class="sec-head">
-    <p class="eyebrow">Workshop and tools</p>
-    <h2 id="wsH">Fix it, or do it yourself.</h2>
-  </div>
-  <div class="ws-grid">
-    <article class="ws rv">
-      <img src="https://images.unsplash.com/photo-1775590766345-c117265f0c1b?w=900&q=70&auto=format&fit=crop" alt="A mechanic working under the bonnet of a car" loading="lazy">
-      <div class="ws-body">
-        <h3>Mechanical repairs</h3>
-        <p>Servicing, brakes, suspension and the jobs other shops turn away. Bring it in or send a voice note describing the noise.</p>
-        <a class="link" href="#" data-ask="a mechanical repair (I will describe the problem)">Book a look <i class="ph-bold ph-arrow-right"></i></a>
-      </div>
-    </article>
-    <article class="ws rv">
-      <img src="https://images.unsplash.com/photo-1683115099413-5b7d85c2950c?w=900&q=70&auto=format&fit=crop" alt="Power tools and hand tools laid out on a bench" loading="lazy">
-      <div class="ws-body">
-        <h3>Ingco tool retailer</h3>
-        <p>Drills, grinders, socket sets and hand tools for the garage and the home.</p>
-        <a class="link" href="#" data-ask="Ingco tools (please send what is in stock)">See what is in stock <i class="ph-bold ph-arrow-right"></i></a>
-      </div>
-    </article>
-  </div>
+<section class="sec wrap" id="services" aria-labelledby="svH">
+  <h2 id="svH">Also at Lewwee Roll</h2>
+  <ul class="svc">
+    <li><a href="#" data-ask="a mechanical repair (I will describe the problem)"><b>Mechanical repairs</b><span>Servicing, brakes, suspension</span><i class="ph ph-arrow-up-right"></i></a></li>
+    <li><a href="#" data-ask="Ingco tools (please send what is in stock)"><b>Ingco tools</b><span>Drills, grinders, socket sets</span><i class="ph ph-arrow-up-right"></i></a></li>
+    <li><a href="#" data-ask="filters, treatments, wipers or other car care"><b>Car care</b><span>Filters, treatments, wipers</span><i class="ph ph-arrow-up-right"></i></a></li>
+    <li><a href="#" data-ask="a courier, chauffeur or transport booking"><b>Courier and chauffeur</b><span>Parts, packages, people</span><i class="ph ph-arrow-up-right"></i></a></li>
+  </ul>
 </section>
 
-<!-- COURIER -->
-<section class="sec courier" id="courier" aria-labelledby="coH">
-  <div class="wrap co-in">
+<section class="sec wrap" id="courier" aria-labelledby="coH">
+  <div class="split">
     <div>
-      <p class="eyebrow">Courier, chauffeur, transport</p>
-      <h2 id="coH">Do we reach you?</h2>
-      <p class="sec-sub">Runs for parts, packages and documents, plus chauffeur and transport bookings. Contactless drop-off or curbside pickup in Curepe.</p>
-      <form class="check" id="areaForm" novalidate>
-        <label for="areaIn" class="sr">Your area</label>
-        <div class="check-row">
-          <i class="ph ph-map-pin"></i>
-          <input id="areaIn" list="areaList" placeholder="Type your area, e.g. Couva" autocomplete="off">
-          <button class="btn btn-go" type="submit">Check</button>
-        </div>
-        <datalist id="areaList"></datalist>
-        <p class="check-out" id="areaOut" aria-live="polite"></p>
-      </form>
-      <div class="regions" id="regions"></div>
+      <h2 id="coH">Delivery</h2>
+      <p class="muted lead">Curbside pickup in Curepe, or delivery across North, Central and South. Pay cash or bank transfer.</p>
     </div>
-    <figure class="co-photo rv"><img src="https://images.unsplash.com/photo-1641199788912-9a7385a35c82?w=900&q=70&auto=format&fit=crop" alt="A white delivery van on the road" loading="lazy"></figure>
+    <form class="check" id="areaForm" novalidate>
+      <label for="areaIn" class="field-lab">Check your area</label>
+      <div class="check-row">
+        <input id="areaIn" list="areaList" placeholder="e.g. Couva" autocomplete="off">
+        <button class="btn btn-go" type="submit">Check</button>
+      </div>
+      <datalist id="areaList"></datalist>
+      <p class="check-out" id="areaOut" aria-live="polite"></p>
+    </form>
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section class="wrap sec voices" aria-label="Customer reviews">
-  <blockquote class="rv">
-    <i class="ph-fill ph-quotes"></i>
-    <p>I thought my car was beyond repair. Very pleased and satisfied with the service.</p>
-    <cite>Customer review on Facebook</cite>
-  </blockquote>
-  <blockquote class="rv">
-    <i class="ph-fill ph-quotes"></i>
-    <p>Received my items today. Very professional and informative.</p>
+<section class="sec wrap quote" aria-label="Customer review">
+  <blockquote>
+    <p>“I thought my car was beyond repair. Very pleased and satisfied with the service.”</p>
     <cite>Customer review on Facebook</cite>
   </blockquote>
 </section>
 </main>
 
 <footer class="foot">
-  <div class="wrap">
-    <div class="foot-cta">
-      <h2>Trustworthy. Reliable. Safe.</h2>
-      <a class="btn btn-go" href="https://wa.me/18687490503" target="_blank" rel="noopener"><i class="ph-fill ph-whatsapp-logo"></i> 868-749-0503</a>
+  <div class="wrap foot-in">
+    <div>
+      <b>Lewwee Roll Ltd</b>
+      <p>Trustworthy. Reliable. Safe.<br>Curepe Village, Trinidad</p>
     </div>
-    <div class="foot-cols">
-      <div><b>Find us</b><p>Curepe Village, Trinidad<br>Curbside pickup by arrangement</p></div>
-      <div><b>Order</b><p>WhatsApp 868-749-0503<br>Retail and bulk</p></div>
-      <div><b>Paying</b><p>Cash or bank transfer<br>Cards coming soon</p></div>
-    </div>
-    <div class="foot-base">
-      <span>© 2026 Lewwee Roll Ltd</span>
-      <a href="https://wa.me/18682591409" target="_blank" rel="noopener">Demo site by Portside Digital</a>
-    </div>
+    <a class="foot-wa" href="https://wa.me/18687490503" target="_blank" rel="noopener">WhatsApp 868-749-0503</a>
+  </div>
+  <div class="wrap foot-base">
+    <span>© 2026 Lewwee Roll Ltd</span>
+    <a href="https://wa.me/18682591409" target="_blank" rel="noopener">Demo site by Portside Digital</a>
   </div>
 </footer>
 
-<!-- Floating slip pill (only when the slip has items) -->
-<button class="slipbar" id="slipbar" hidden aria-label="Open order slip">
-  <span class="sb-count" id="barCount">0 items</span>
-  <span class="sb-total" id="barTotal">$0</span>
-  <span class="sb-go">View slip <i class="ph-bold ph-arrow-up"></i></span>
+<button class="slipbar" id="slipbar" hidden aria-label="Open order">
+  <span><span id="barCount">0 items</span> · <b id="barTotal">$0</b></span>
+  <span class="sb-go">View order</span>
 </button>
 
 <div class="scrim" id="scrim" hidden></div>
-<aside class="slip" id="slip" aria-label="Order slip" aria-hidden="true" inert>
+<aside class="slip" id="slip" aria-label="Your order" aria-hidden="true" inert>
   <div class="slip-head">
-    <h2>Order slip</h2>
-    <button class="icon-btn" id="closeSlip" aria-label="Close order slip"><i class="ph ph-x"></i></button>
+    <h2>Your order</h2>
+    <button class="icon-btn" id="closeSlip" aria-label="Close order"><i class="ph ph-x"></i></button>
   </div>
   <div class="slip-scroll">
     <ul class="slip-items" id="slipItems"></ul>
     <div class="slip-empty" id="slipEmpty">
-      <i class="ph ph-receipt"></i>
-      <p>Your slip is empty.</p>
-      <a class="btn btn-line" href="#oil" id="slipBrowse">Browse the oil</a>
+      <p>Nothing added yet.</p>
+      <a class="text-btn" href="#oil" id="slipBrowse">See oil prices</a>
     </div>
     <form class="order" id="orderForm" novalidate hidden>
       <div class="slip-total"><span>Estimated total</span><b id="slipTotal">$0</b></div>
       <label class="field"><span>Your name</span><input id="oName" type="text" autocomplete="name"></label>
-      <fieldset class="seg-field"><legend>How do you want it?</legend>
+      <fieldset class="seg-field"><legend>Pickup or delivery</legend>
         <div class="seg" id="fulfil">
-          <label><input type="radio" name="fulfil" value="Curbside pickup" checked><span>Curbside pickup</span></label>
+          <label><input type="radio" name="fulfil" value="Curbside pickup" checked><span>Pickup</span></label>
           <label><input type="radio" name="fulfil" value="Delivery"><span>Delivery</span></label>
         </div>
       </fieldset>
@@ -321,9 +184,9 @@
           <label><input type="radio" name="pay" value="Bank transfer"><span>Bank transfer</span></label>
         </div>
       </fieldset>
-      <p class="slip-note"><i class="ph ph-lock-simple"></i> No card details are taken here. We confirm stock and total on WhatsApp first.</p>
+      <p class="slip-note">No card details are taken here. We confirm stock and total on WhatsApp.</p>
       <p class="err" id="orderErr" role="alert"></p>
-      <button class="btn btn-go full" type="submit"><i class="ph-fill ph-whatsapp-logo"></i> Send order on WhatsApp</button>
+      <button class="btn btn-go full" type="submit">Send order on WhatsApp</button>
     </form>
   </div>
 </aside>
