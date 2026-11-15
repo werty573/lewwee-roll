@@ -27,17 +27,17 @@
     { id: 'upm', brand: 'Ultra Plus', name: 'Ultra Plus Motor Oil', size: Q, type: 'qt', grades: ['10W-30', '15W-40', '20W-50'], tiers: [['Single', 1, 55]] },
     { id: 'dlv', brand: 'Mobil Delvac', name: 'Mobil Delvac 1300 Super', size: G, type: 'diesel', grades: ['15W-40'], tiers: [] },
   ];
-  const TYPES = [['all', 'All stock'], ['gal', 'Gallons'], ['qt', 'Quarts'], ['atf', 'Transmission / ATF'], ['diesel', 'Diesel']];
+  const TYPES = [['all', 'All'], ['gal', 'Gallons'], ['qt', 'Quarts'], ['atf', 'ATF / CVT'], ['diesel', 'Diesel']];
   const FINDER = ['0W-20', '5W-30', '10W-30', '10W-40', '5W-40', '15W-40', 'ATF/CVT'];
-  const LIMIT = 9;
+  const LIMIT = 8;
+  const CAN = { gal: 'GAL', qt: 'QT', atf: 'ATF', diesel: 'DSL' };
 
-  const state = { type: 'all', grade: null, all: false };
+  const state = { type: 'all', grade: null, all: false, open: null };
   const pick = {}; // per product: grade, tier, qty
 
   const matchGrade = (p, g) => !g || (g === 'ATF/CVT' ? p.type === 'atf' : p.grades.includes(g));
   const list = () => P.filter(p => (state.type === 'all' || p.type === state.type) && matchGrade(p, state.grade));
 
-  // types rail
   const typesEl = $('#types');
   const renderTypes = () => {
     typesEl.innerHTML = TYPES.map(([k, l]) => {
@@ -50,65 +50,78 @@
     state.type = b.dataset.type; state.all = false; render();
   });
 
-  // finder
-  $('#finderGrades').innerHTML = FINDER.map(g => `<button class="grade" data-g="${g}">${g}</button>`).join('');
-  $('#finderGrades').addEventListener('click', e => {
+  const gradesEl = $('#grades');
+  gradesEl.innerHTML = `<button class="grade" data-g="">Any grade</button>` + FINDER.map(g => `<button class="grade" data-g="${g}">${g}</button>`).join('');
+  gradesEl.addEventListener('click', e => {
     const b = e.target.closest('.grade'); if (!b) return;
-    setGrade(b.dataset.g);
-    $('#stock').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setGrade(b.dataset.g || null);
   });
   function setGrade(g) {
-    state.grade = g; state.type = 'all'; state.all = true;
+    state.grade = g; state.type = 'all'; state.all = !!g; state.open = null;
     P.forEach(p => { if (g && p.grades.includes(g)) (pick[p.id] ||= {}).grade = g; });
     render();
   }
-  $('#clearGrade').addEventListener('click', () => { state.grade = null; state.all = false; render(); });
+  $('#clearGrade').addEventListener('click', () => { state.grade = null; state.type = 'all'; state.all = false; render(); });
 
   const prodEl = $('#products');
-  function card(p) {
+  function row(p) {
     const s = (pick[p.id] ||= {});
     s.grade ||= p.grades[0]; s.tier ??= 0; s.qty ||= 1;
     const single = p.tiers[0] ? p.tiers[0][2] : 0;
-    const grades = p.grades.length > 1
-      ? p.grades.map(g => `<button class="cg" aria-pressed="${s.grade === g}" data-grade="${g}">${g}</button>`).join('')
-      : `<span class="cg static">${p.grades[0]}</span>`;
-    const tiers = p.tiers.length ? `<div class="tiers" role="radiogroup" aria-label="${p.name} price">` + p.tiers.map(([l, u, pr], i) => {
-      const save = u > 1 ? single * u - pr : 0;
-      return `<label class="tier"><input type="radio" name="t-${p.id}" value="${i}" ${s.tier === i ? 'checked' : ''}><span class="tier-l">${l}${save > 0 ? `<small>Save ${money(save)}</small>` : ''}</span><span class="tier-p">${money(pr)}</span></label>`;
-    }).join('') + '</div>'
-      : `<p class="ask-price">Price on request. <a href="https://wa.me/${WA}?text=${encodeURIComponent('Hi Lewwee Roll, what is the price for ' + p.name + ' ' + p.grades[0] + '?')}" target="_blank" rel="noopener">Ask on WhatsApp</a></p>`;
-    const foot = p.tiers.length ? `<div class="card-foot">
-        <div class="qty"><button data-q="-1" aria-label="Less">−</button><output>${s.qty}</output><button data-q="1" aria-label="More">+</button></div>
-        <button class="btn btn-go add"><i class="ph-bold ph-plus"></i> Add to slip</button></div>` : '';
-    return `<article class="card" data-id="${p.id}">
-      <div class="card-top"><span class="card-brand">${p.brand}</span><span class="card-size">${p.size}</span></div>
-      <h3>${p.name}</h3>
-      <div class="card-grades">${grades}</div>${tiers}${foot}</article>`;
+    const isOpen = state.open === p.id;
+    const sizeShort = p.size.split(' ')[0];
+    const meta = `${sizeShort} · ${p.grades.length > 1 ? p.grades.length + ' grades' : p.grades[0]}${p.tiers.length > 1 ? ' · case price' : ''}`;
+    const price = p.tiers.length ? `<small>${p.tiers.length > 1 ? 'from' : 'each'}</small><b>${money(single)}</b>` : `<span class="poa">Ask price</span>`;
+    let body = '';
+    if (isOpen) {
+      const grades = p.grades.length > 1
+        ? p.grades.map(g => `<button class="cg" aria-pressed="${s.grade === g}" data-grade="${g}">${g}</button>`).join('')
+        : `<span class="cg static">${p.grades[0]}</span>`;
+      const tiers = p.tiers.length ? `<div><p class="pb-lab">Pack</p><div class="tiers" role="radiogroup" aria-label="${p.name} pack">` + p.tiers.map(([l, u, pr], i) => {
+        const sv = u > 1 ? single * u - pr : 0;
+        return `<label class="tier"><input type="radio" name="t-${p.id}" value="${i}" ${s.tier === i ? 'checked' : ''}><span class="tier-l">${l}${sv > 0 ? `<small>Save ${money(sv)}</small>` : ''}</span><span class="tier-p">${money(pr)}</span></label>`;
+      }).join('') + '</div></div>'
+        : `<p class="ask-price">Price on request. <a href="https://wa.me/${WA}?text=${encodeURIComponent('Hi Lewwee Roll, what is the price for ' + p.name + ' ' + p.grades[0] + '?')}" target="_blank" rel="noopener">Ask on WhatsApp</a></p>`;
+      const foot = p.tiers.length ? `<div class="pb-foot">
+          <div class="qty"><button data-q="-1" aria-label="Less">−</button><output>${s.qty}</output><button data-q="1" aria-label="More">+</button></div>
+          <button class="btn btn-go add"><i class="ph-bold ph-plus"></i> Add to slip</button></div>` : '';
+      body = `<div class="prod-body" id="pb-${p.id}"><div><p class="pb-lab">Grade</p><div class="cgs">${grades}</div></div>${tiers}${foot}</div>`;
+    }
+    return `<li class="prod" data-id="${p.id}" open-state="${isOpen ? 'open' : ''}">
+      <button class="prod-row" aria-expanded="${isOpen}" aria-controls="pb-${p.id}">
+        <span class="can" data-t="${p.type}" aria-hidden="true">${CAN[p.type]}</span>
+        <span class="prod-main"><b>${p.name}</b><small>${meta}</small></span>
+        <span class="prod-price">${price}</span>
+        <i class="ph-bold ph-caret-down chev" aria-hidden="true"></i>
+      </button>${body}</li>`;
   }
   function render() {
     renderTypes();
     const L = list();
     const shown = state.all ? L : L.slice(0, LIMIT);
-    prodEl.innerHTML = shown.map(card).join('');
-    $$('.card', prodEl).forEach((c, i) => c.style.animationDelay = Math.min(i, 8) * 35 + 'ms');
+    prodEl.innerHTML = shown.map(row).join('');
+    prodEl.hidden = L.length === 0;
     $('#empty').hidden = L.length > 0;
     const more = $('#showMore');
     more.hidden = state.all || L.length <= LIMIT;
-    more.textContent = `Show all ${L.length} items`;
-    $('#resultCount').textContent = `${L.length} ${L.length === 1 ? 'item' : 'items'}${state.grade ? ' in ' + state.grade : ''}`;
-    $('#gradePill').hidden = !state.grade;
-    $('#gradePillVal').textContent = state.grade || '';
-    $$('.grade').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === state.grade));
+    more.textContent = `Show all ${L.length} lines`;
+    $('#resultCount').textContent = `${L.length} ${L.length === 1 ? 'line' : 'lines'}${state.grade ? ' in ' + state.grade : ''}`;
+    $$('.grade').forEach(b => b.setAttribute('aria-pressed', (b.dataset.g || null) === state.grade));
   }
   $('#showMore').addEventListener('click', () => { state.all = true; render(); });
 
   prodEl.addEventListener('click', e => {
-    const c = e.target.closest('.card'); if (!c) return;
-    const p = P.find(x => x.id === c.dataset.id), s = pick[p.id];
+    const li = e.target.closest('.prod'); if (!li) return;
+    const p = P.find(x => x.id === li.dataset.id), s = pick[p.id];
+    if (e.target.closest('.prod-row')) {
+      state.open = state.open === p.id ? null : p.id; render();
+      const el = prodEl.querySelector(`[data-id="${p.id}"] .prod-row`); el && el.focus({ preventScroll: true });
+      return;
+    }
     const g = e.target.closest('.cg[data-grade]');
-    if (g) { s.grade = g.dataset.grade; $$('.cg', c).forEach(b => b.setAttribute('aria-pressed', b === g)); return; }
+    if (g) { s.grade = g.dataset.grade; $$('.cg', li).forEach(b => b.setAttribute('aria-pressed', b === g)); return; }
     const q = e.target.closest('[data-q]');
-    if (q) { s.qty = Math.max(1, Math.min(99, s.qty + +q.dataset.q)); $('.qty output', c).textContent = s.qty; return; }
+    if (q) { s.qty = Math.max(1, Math.min(99, s.qty + +q.dataset.q)); $('.qty output', li).textContent = s.qty; return; }
     const add = e.target.closest('.add');
     if (add) {
       const [label, units, price] = p.tiers[s.tier];
@@ -119,7 +132,7 @@
   });
   prodEl.addEventListener('change', e => {
     const r = e.target.closest('input[type=radio]'); if (!r) return;
-    pick[r.closest('.card').dataset.id].tier = +r.value;
+    pick[r.closest('.prod').dataset.id].tier = +r.value;
   });
 
   /* ---------- Order slip ---------- */
@@ -207,22 +220,18 @@
   /* ---------- Suzuki part request ---------- */
   const yearSel = $('#pYear');
   const y0 = 2026;
-  yearSel.innerHTML = '<option value="">year</option>' + Array.from({ length: 30 }, (_, i) => `<option>${y0 - i}</option>`).join('');
+  yearSel.innerHTML = '<option value="">Choose</option>' + Array.from({ length: 30 }, (_, i) => `<option>${y0 - i}</option>`).join('');
   $('#partForm').addEventListener('submit', e => {
     e.preventDefault();
     const part = $('#pPart'), year = $('#pYear'), model = $('#pModel'), err = $('#partErr');
     const bad = [part, year, model].filter(x => !x.value.trim());
-    $$('.ml', e.target).forEach(m => m.classList.remove('bad'));
-    if (bad.length) { bad.forEach(b => b.closest('.ml').classList.add('bad')); err.textContent = 'Fill in the part, year and model.'; bad[0].focus(); return; }
+    $$('.field', e.target).forEach(m => m.classList.remove('bad'));
+    if (bad.length) { bad.forEach(b => b.closest('.field').classList.add('bad')); err.textContent = 'Add the part, model and year.'; bad[0].focus(); return; }
     err.textContent = '';
     const cond = $('input[name=cond]:checked').value, ch = $('#pChassis').value.trim();
     const msg = `Hi Lewwee Roll, I need a ${part.value.trim()} for a ${year.value} ${model.value}. Condition: ${cond}.${ch ? ' Chassis no: ' + ch + '.' : ''} Price and availability please?`;
     window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
   });
-  // grow the part input with its text
-  const pPart = $('#pPart');
-  const fit = () => { pPart.style.width = Math.max(10, Math.min(22, (pPart.value || pPart.placeholder).length + 1)) + 'ch'; };
-  pPart.addEventListener('input', fit); fit();
 
   /* ---------- Delivery areas (from his own area list) ---------- */
   const REG = {
@@ -233,7 +242,7 @@
   const ALL = Object.values(REG).flat();
   $('#areaList').innerHTML = ALL.map(a => `<option value="${a}">`).join('');
   const regEl = $('#regions');
-  regEl.innerHTML = Object.entries(REG).map(([r, as]) => `<div class="region"><b>${r}</b>${as.slice(0, 7).map(a => `<span data-a="${a}">${a}</span>`).join('')}${as.length > 7 ? `<span>+${as.length - 7} more</span>` : ''}</div>`).join('');
+  regEl.innerHTML = Object.entries(REG).map(([r, as]) => `<div class="region"><b>${r}</b><div>${as.slice(0, 8).map(a => `<span data-a="${a}">${a}</span>`).join('')}${as.length > 8 ? `<span class="more-n">+${as.length - 8} more</span>` : ''}</div></div>`).join('');
   const norm = s => s.toLowerCase().replace(/[^a-z]/g, '');
   $('#areaForm').addEventListener('submit', e => {
     e.preventDefault();
@@ -273,11 +282,11 @@
   const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { rootMargin: '0px 0px -8% 0px' });
   $$('.rv').forEach(el => io.observe(el));
 
-  const links = $$('.depts a');
+  const links = $$('.nav a');
   const secIO = new IntersectionObserver(es => es.forEach(en => {
     if (en.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
-  ['stock', 'shelf', 'suzuki', 'workshop', 'courier'].forEach(id => secIO.observe(document.getElementById(id)));
+  ['oil', 'care', 'suzuki', 'workshop', 'courier'].forEach(id => secIO.observe(document.getElementById(id)));
 
   // hide floating slip bar over forms and footer so it never covers inputs
   const covering = new Set();
@@ -285,7 +294,17 @@
     es.forEach(en => en.isIntersecting ? covering.add(en.target) : covering.delete(en.target));
     $('#slipbar').classList.toggle('away', covering.size > 0);
   });
-  ['#partForm', '#areaForm', '.foot', '.cta-row'].forEach(s => barIO.observe($(s)));
+  ['#partForm', '#areaForm', '.foot', '.hero'].forEach(s => barIO.observe($(s)));
+
+  /* ---------- Phone menu ---------- */
+  const menu = $('#menu'), menuBtn = $('#menuBtn');
+  const setMenu = on => { menu.hidden = !on; menuBtn.setAttribute('aria-expanded', on); menuBtn.innerHTML = `<i class="ph ph-${on ? 'x' : 'list'}"></i>`; };
+  menuBtn.addEventListener('click', () => setMenu(menu.hidden));
+  menu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  $('#slipBrowse').addEventListener('click', closeSlip);
+
+  const filt = $('.filters');
+  new IntersectionObserver(([en]) => filt.classList.toggle('stuck', en.intersectionRatio < 1), { rootMargin: '-80px 0px 0px 0px', threshold: [1] }).observe(filt);
 
   render();
   renderSlip();
